@@ -37,7 +37,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'profiles',
     'downloader',
+    'captcha',
+    'django.contrib.sites',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +58,7 @@ ROOT_URLCONF = 'urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'ytb_dl/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,5 +128,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, './ffmpeg'),
+    os.path.join(BASE_DIR, 'ytb_dl/static'),
 ]
+
+AUTH_USER_MODEL = 'profiles.CustomUser'
+
+RECAPTCHA_PUBLIC_KEY = '6LexX5cmAAAAALCmyYLeD3776EpwWqSQItxZOMd4'
+RECAPTCHA_PRIVATE_KEY = '6LexX5cmAAAAAFvmH-nhtlb9oBqXHqXNSX2ZQmfD'
