@@ -42,7 +42,7 @@ def signup(request):
     else:
         form = SignupForm()
 
-    return render(request, 'signup.html', {'form': form})
+    return render(request, 'profiles/signup.html', {'form': form})
 
 
 def verify_email(uidb64, token):
