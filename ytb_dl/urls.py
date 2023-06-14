@@ -18,8 +18,11 @@ from django.contrib import admin
 from django.urls import path
 
 from downloader.views import download_video
+from profiles.views import signup, verify_email
 
 urlpatterns = [
+    path('signup/', signup, name='signup'),
+    path('verify-email/<str:uidb64>/<str:token>/', verify_email, name='verify_email'),
     path('download/', download_video, name='download_video'),
     path('admin/', admin.site.urls),
 ]
