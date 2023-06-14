@@ -1,0 +1,7 @@
+{% load static %}
+
+<p>Hello {{ user.username }},</p>
+<p>Thank you for signing up. Please click the link below to verify your email:</p>
+<p><a href="{{ verification_url }}">{{ verification_url }}</a></p>
+<p>Best regards,</p>
+<p>Your Website Team</p>
