@@ -1,60 +1,41 @@
 import pytest
-from django.test import RequestFactory
-from downloader.models import Video
-from pytube import YouTube, StreamQuery, Stream
-from unittest.mock import MagicMock
+from django.conf import settings
 
 
-pytest_plugins = ['pytest_mock']
+@pytest.fixture(scope='session')
+def django_db_setup():
+    settings.configure(
+        DEBUG=True,
+        DATABASES={
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': ':memory:',
+            }
+        },
+        INSTALLED_APPS=[
+            'django.contrib.admin',
+            'django.contrib.auth',
+            'django.contrib.contenttypes',
+            'django.contrib.sessions',
+            'django.contrib.messages',
+            'django.contrib.staticfiles',
+            'profiles',
+            'downloader',
+            'captcha',
+            'django.contrib.sites',
+        ],
+    )
+    settings.BASE_DIR = 'your_base_dir'  # Remplacez par le chemin de votre répertoire de base Django
 
-@pytest.fixture
-def request_factory():
-    return RequestFactory()
+    # Effectuez d'autres configurations spécifiques à votre projet si nécessaire
 
+    # Laissez Django initialiser la base de données
+    pytest_configure = pytest.importorskip("django").pytest_configure
+    pytest_configure()
 
-@pytest.fixture
-def sample_video():
-    # Crée un objet Video de test
-    video = Video(link='https://www.example.com/video', output_format='mp4')
-    video.save()
-    return video
+    yield
 
+    # Fermez la base de données après les tests
+    pytest_unconfigure = pytest.importorskip("django").pytest_unconfigure
+    pytest_unconfigure()
 
-
-@pytest.fixture
-def mocked_youtube(mocker):
-    # Mocke la méthode YouTube pour éviter les requêtes réseau
-    mocked_yt = mocker.MagicMock(spec=YouTube)
-    mocked_yt.title = 'Test Video'
-
-    # Définir le comportement de la méthode streams pour renvoyer un objet StreamQuery
-    streams_query = mocker.MagicMock(spec=StreamQuery)
-    mocked_yt.streams = mocker.MagicMock(return_value=streams_query)
-
-    # Définir le comportement de la méthode get_highest_resolution sur l'objet StreamQuery
-    highest_resolution_stream = mocker.MagicMock(spec=Stream)
-    streams_query.get_highest_resolution = mocker.MagicMock(return_value=highest_resolution_stream)
-
-    return mocked_yt
-
-
-@pytest.fixture
-def mocked_ffmpeg(mocker):
-    # Mocke les méthodes ffmpeg.input et ffmpeg.output pour éviter les appels réels
-    mocked_ffmpeg = mocker.patch('downloader.views.ffmpeg')
-    return mocked_ffmpeg
-
-
-@pytest.fixture
-def mocked_shutil(mocker):
-    # Mocke la méthode shutil.move pour éviter les opérations de déplacement réelles
-    mocked_shutil = mocker.patch('downloader.views.shutil.move')
-    return mocked_shutil
-
-
-@pytest.fixture
-def mocked_open(mocker):
-    # Mocke la fonction open pour éviter la lecture de fichiers réels
-    mocked_file = mocker.mock_open()
-    mocker.patch('downloader.views.open', mocked_file)
-    return mocked_file
