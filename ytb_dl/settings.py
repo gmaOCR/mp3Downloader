@@ -107,7 +107,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-fr'
 
 TIME_ZONE = 'UTC'
 
@@ -135,3 +135,5 @@ AUTH_USER_MODEL = 'profiles.CustomUser'
 
 RECAPTCHA_PUBLIC_KEY = '6LexX5cmAAAAALCmyYLeD3776EpwWqSQItxZOMd4'
 RECAPTCHA_PRIVATE_KEY = '6LexX5cmAAAAAFvmH-nhtlb9oBqXHqXNSX2ZQmfD'
+
+LOGIN_REDIRECT_URL = 'signup'
