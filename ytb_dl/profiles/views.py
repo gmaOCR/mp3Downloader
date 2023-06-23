@@ -57,3 +57,7 @@ def verify_email(uidb64, token):
         pass
 
     return HttpResponse('Invalid verification link.')
+
+
+def home(request):
+    return render(request, 'profiles/home.html')
