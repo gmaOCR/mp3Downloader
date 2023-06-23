@@ -1,28 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
+{% extends 'base.html' %}
+{% block content %}
     <title>Download page</title>
-<form method="post" action="{% url 'download_video' %}">
-  {% csrf_token %}
-  <label for="link">Lien YouTube :</label>
-  <input type="text" name="link" id="link" required>
+    {% load static %}
+    <form id="download-form" method="post" action="{% url 'download_video' %}">
+      {% csrf_token %}
+      <label for="link">Lien YouTube :</label>
+      <input type="text" name="link" id="link" required>
 
-  <label for="output-format">Format de sortie :</label>
-  <select name="output_format" id="output-format">
-    <option value="mp4">MP4</option>
-    <option value="avi">AVI</option>
-    <option value="mkv">MKV</option>
-    <option value="mp3">MP3</option>
-    <!-- Ajoutez d'autres options pour les formats souhaités -->
-  </select>
+      <label for="output-format">Format de sortie :</label>
+      <select name="output_format" id="output-format">
+        <option value="mp4">MP4</option>
+        <option value="avi">AVI</option>
+        <option value="mkv">MKV</option>
+        <option value="mp3">MP3</option>
+        <!-- Ajoutez d'autres options pour les formats souhaités -->
+      </select>
 
-  <button type="submit">Télécharger</button>
-</form>
-
-
-</head>
-<body>
-
-</body>
-</html>
+        <button id="download-btn" type="submit">Télécharger</button>
+    </form>
+{% endblock content %}
