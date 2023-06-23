@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 downloader = "*"
+consumers = "*"
 
 [dev-packages]
 
