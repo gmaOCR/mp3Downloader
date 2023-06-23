@@ -1,15 +1,14 @@
 import os
-from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseServerError, HttpResponse
 from django.conf import settings
 from django.shortcuts import render
 from moviepy.audio.io.AudioFileClip import AudioFileClip
 from moviepy.video.io.VideoFileClip import VideoFileClip
-from django.http import HttpResponseServerError
 
 from .models import Video
 from pytube import YouTube
 
-# Liste des formats disponibles
 AVAILABLE_FORMATS = ['mp4', 'avi', 'mkv', 'mp3']
 
 
@@ -72,6 +71,7 @@ def convert_to_mp4(video_path, video_title, output_directory):
     return output_file
 
 
+@login_required
 def download_video(request):
     if request.method == 'POST':
         link = request.POST.get('link')
@@ -83,7 +83,8 @@ def download_video(request):
 
             if output_file and os.path.exists(output_file):
                 with open(output_file, 'rb') as file:
-                    response = HttpResponse(file.read(), content_type='application/octet-stream')
+                    response = HttpResponse(file.read(),
+                                            content_type='application/octet-stream')
 
                 output_filename = os.path.basename(output_file)
                 response['Content-Disposition'] = f'attachment; filename="{output_filename}"'
