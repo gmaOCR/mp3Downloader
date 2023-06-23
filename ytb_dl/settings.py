@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'downloader',
     'captcha',
     'django.contrib.sites',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -121,6 +122,7 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -136,4 +138,6 @@ AUTH_USER_MODEL = 'profiles.CustomUser'
 RECAPTCHA_PUBLIC_KEY = '6LexX5cmAAAAALCmyYLeD3776EpwWqSQItxZOMd4'
 RECAPTCHA_PRIVATE_KEY = '6LexX5cmAAAAAFvmH-nhtlb9oBqXHqXNSX2ZQmfD'
 
-LOGIN_REDIRECT_URL = 'signup'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = LOGIN_URL
