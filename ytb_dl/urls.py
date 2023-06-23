@@ -15,14 +15,29 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse
 from django.urls import path
+from django.views import View
 
 from downloader.views import download_video
-from profiles.views import signup, verify_email
+from profiles.views import signup, verify_email, home
+from django.contrib.auth.views import LoginView, LogoutView
+
+
+class EmptyView(View):
+    def get(self, request):
+        return HttpResponse()
+
 
 urlpatterns = [
     path('signup/', signup, name='signup'),
     path('verify-email/<str:uidb64>/<str:token>/', verify_email, name='verify_email'),
     path('download/', download_video, name='download_video'),
     path('admin/', admin.site.urls),
+    path('', login_required(home), name='home'),
+    path('login/', LoginView.as_view(template_name='profiles/login.html',
+                                     redirect_authenticated_user=True), name='login'),
+    path('logout/', LogoutView.as_view(), name='logout'),
+    path('favicon.ico', EmptyView.as_view(), name='favicon'),
 ]
